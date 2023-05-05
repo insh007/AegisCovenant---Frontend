@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 import './Home.css'
+import axios from 'axios'
 
 const Home = () => {
     const [source, setSource] = useState("");
     const [destination, setDestination] = useState("");
     const [date, setDate] = useState("");
+
+    const [prices, setPrices] = useState({});
 
     const cities = [
         "Delhi",
@@ -13,26 +16,52 @@ const Home = () => {
         "Bangalore",
         "Kolkata",
         "Chennai",
-        // Add more cities as needed
-    ];
+        "Hyderabad",
+        "Pune",
+        "Ahmedabad",
+        "Jaipur",
+        "Amritsar",
+        "Kochi",
+        "Goa",
+        "Guwahati",
+        "Indore",
+        "Nagpur",
+        "Guwahati",
+        "Calicut",
+        "Thiruvananthapuram"
 
-    const handleCityChange = (e) => {
+    ];
+    
+
+    const handleSourceCityChange = (e) => {
         setSource(e.target.value);
+    };
+
+    const handleDestinationCityChange = (e) => {
+        setDestination(e.target.value);
     };
 
     const handleDateChange = (e) => {
         setDate(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Perform any necessary actions with the form data
-        console.log("Source:", source);
-        console.log("Destination:", destination);
-        console.log("Date:", date);
+    
+        try {
+            const response = await axios.get(`http://localhost:3000/flights`, {
+                params: {
+                    Source: source,         
+                    Destination: destination,   
+                    Date: date
+                }
+            })
+            setPrices(response.data);
+        } catch (error) {
+            console.error(error);
+        }  
     };
-
+    
 
 
     return (
@@ -64,7 +93,7 @@ const Home = () => {
                     <h2>Dream! Plan! Go!</h2>
                     <form className='cities-form' onSubmit={handleSubmit}>
                         <label htmlFor="source">Source:</label>
-                        <select id="source" value={source} onChange={handleCityChange} required>
+                        <select id="source" value={source} onChange={handleSourceCityChange} required>
                             <option value="">Select source city</option>
                             {cities.map((city) => (
                                 <option key={city} value={city}>
@@ -74,7 +103,7 @@ const Home = () => {
                         </select>
 
                         <label htmlFor="destination">Destination:</label>
-                        <select id="destination" value={destination} onChange={handleCityChange} required>
+                        <select id="destination" value={destination} onChange={handleDestinationCityChange} required>
                             <option value="">Select destination city</option>
                             {cities.map((city) => (
                                 <option key={city} value={city}>
@@ -95,6 +124,19 @@ const Home = () => {
                         <button type="submit">Go</button>
                     </form>
                 </div>
+
+                {Object.keys(prices).length > 0 && (
+                    <div className='prices-container'>
+                        <h3>Flight Prices:</h3>
+                        <ul className='price-list'>
+                            {Object.entries(prices).map(([airline, price]) => (
+                                <li key={airline}>
+                                    {`${airline}: ${price === '₹0' ? '₹0' : price}`}    
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         </>
     )
