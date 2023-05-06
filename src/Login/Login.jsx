@@ -2,14 +2,26 @@ import React, { useState } from "react";
 import './Login.css'
 import { NavLink } from "react-router-dom";
 
-const Login = (props) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
-    }
+
+        axios.post('http://localhost:3000/login', {
+            email: email,
+            password: pass
+        })
+            .then((response) => {
+                console.log(response.data.token);
+                // Store the token in localStorage or session storage
+            })
+            .catch((error) => {
+                console.log(error.response.data.message);
+            });
+    };
+
 
     return (
         <>
@@ -23,7 +35,6 @@ const Login = (props) => {
                         <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
                         <button type="submit">Log In</button>
                     </form>
-                    {/* <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button> */}
 
                     <NavLink className="link-btn" to="/signup" >Don't have an account? Register here.</NavLink>
                 </div>
