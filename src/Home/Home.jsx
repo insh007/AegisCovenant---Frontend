@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import './Home.css'
 import axios from 'axios'
 
@@ -26,12 +26,9 @@ const Home = () => {
         "Guwahati",
         "Indore",
         "Nagpur",
-        "Guwahati",
         "Calicut",
         "Thiruvananthapuram"
-
     ];
-    
 
     const handleSourceCityChange = (e) => {
         setSource(e.target.value);
@@ -45,24 +42,44 @@ const Home = () => {
         setDate(e.target.value);
     };
 
+    let navigate = useNavigate()
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate("/") // redirect to login
+        }
+        else {
+            navigate("/login") // redirect to login
+        }
+
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const response = await axios.get(`http://localhost:3000/flights`, {
                 params: {
-                    Source: source,         
-                    Destination: destination,   
+                    Source: source,
+                    Destination: destination,
                     Date: date
+                },
+                headers: {
+                    'x-api-key': localStorage.getItem('token')
                 }
             })
+            console.log(response)
             setPrices(response.data);
         } catch (error) {
             console.error(error);
-        }  
+        }
     };
-    
 
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/login') // redirect
+    }
 
     return (
         <>
@@ -80,10 +97,13 @@ const Home = () => {
                             </li>
                         </ul>
 
-                        <form className="d-flex">
-                            <NavLink className="btn btn-secondary mx-1 btn-sm" to="/login" role="button">Login</NavLink>
-                            <NavLink className="btn btn-secondary mx-1 btn-sm" to="/signup" role="button">SignUp</NavLink>
-                        </form>
+                        {
+                            !localStorage.getItem('token') ?
+                                <form className="d-flex">
+                                    <NavLink className="btn btn-secondary mx-1 btn-sm" to="/login" role="button">Login</NavLink>
+                                    <NavLink className="btn btn-secondary mx-1 btn-sm" to="/signup" role="button">SignUp</NavLink>
+                                </form> : <button onClick={handleLogout} className='btn btn-secondary btn-sm'>Logout</button>
+                        }
                     </div>
                 </div>
             </nav>
@@ -131,7 +151,7 @@ const Home = () => {
                         <ul className='price-list'>
                             {Object.entries(prices).map(([airline, price]) => (
                                 <li key={airline}>
-                                    {`${airline}: ${price === '₹0' ? '₹0' : price}`}    
+                                    {`${airline}: ${price === '₹0' ? '₹0' : price}`}
                                 </li>
                             ))}
                         </ul>

@@ -1,25 +1,41 @@
 import React, { useState } from "react";
 import './Login.css'
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
 
-    const handleSubmit = (e) => {
+    const [credentials, setCredentials] = useState({email:"", password:""})
+
+    let navigate = useNavigate()
+
+    const onChange = (e) => {
+        setCredentials({...credentials, [e.target.name] : e.target.value})
+    }
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:3000/login', {
-            email: email,
-            password: pass
+        const response = await fetch("http://localhost:3000/api/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: credentials.email, password: credentials.password })
         })
-            .then((response) => {
-                console.log(response.data.token);
-                // Store the token in localStorage or session storage
-            })
-            .catch((error) => {
-                console.log(error.response.data.message);
-            });
+        console.log(response)
+        const json = await response.json()
+        console.log(json)
+
+        if(json.status){
+            // save the auth token and redirect
+            localStorage.setItem('token', json.token)
+            
+            alert("Logged in successful")
+            navigate('/')  // redirect
+        }else{
+            alert("Invalid credentials")
+        }
     };
 
 
@@ -30,9 +46,9 @@ const Login = () => {
                     <h2>Login</h2>
                     <form className="login-form" onSubmit={handleSubmit}>
                         <label htmlFor="email">email</label>
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+                        <input value={ credentials.email} onChange={onChange} type="email" placeholder="youremail@gmail.com" id="email" name="email" required />
                         <label htmlFor="password">password</label>
-                        <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+                        <input value={credentials.password} onChange={onChange} type="password" placeholder="********" id="password" name="password" required />
                         <button type="submit">Log In</button>
                     </form>
 
