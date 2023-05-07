@@ -11,25 +11,25 @@ https://ages-covenant-api.onrender.com
 https://ages-covenants-app.onrender.com
 
 ###### Screenshot 1
-![Flight's Home](./screenshots/screenshot1.png "Home Screenshot 1")
+![Flight's Home](./screenshots/Home1.png "Home Screenshot 1")
 <br>
 <br>
 <br>
 
 ###### Screenshot 2
-![Flight's Home](./screenshots/screenshot2.png "Home Screenshot 2")
+![Flight's Home](./screenshots//Home2.png "Home Screenshot 2")
 <br>
 <br>
 <br>
 
 ###### Screenshot 3
-![Flight's Login](./screenshots/screenshot3.png "Login Screenshot 3")
+![Flight's Login](./screenshots/Login3.png "Login Screenshot 3")
 <br>
 <br>
 <br>
 
 ###### Screenshot 4
-![Flight's Register](./screenshots/screenshot4.png "Register Screenshot 4")
+![Flight's Register](./screenshots/Register4.png "Register Screenshot 4")
 <br>
 <br>
 <br>
