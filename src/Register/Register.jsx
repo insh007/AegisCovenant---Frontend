@@ -25,13 +25,9 @@ const Register = () => {
         const json = await response.json()
         console.log(json)
         if (json.status) {
-            // save the auth token and redirect
-            // localStorage.setItem('token', json.data.password)
-            
             alert("Account created successfully")
             navigate('/login')  // redirect
         } else {
-            // alert("Invalid credentials")
             alert(json.message)  // Show the error message from the backend
         }
     }

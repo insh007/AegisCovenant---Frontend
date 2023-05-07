@@ -49,7 +49,6 @@ const Home = () => {
             navigate("/") // redirect to login
         }
         else {
-            // alert("you are browsing as a guest!!")
             navigate("/login") // redirect to login
         }
 
@@ -69,10 +68,9 @@ const Home = () => {
                     'x-api-key': localStorage.getItem('token')
                 }
             })
-            console.log(response)
             setPrices(response.data);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
         }
     };
 
