@@ -49,6 +49,7 @@ const Home = () => {
             navigate("/") // redirect to login
         }
         else {
+            // alert("you are browsing as a guest!!")
             navigate("/login") // redirect to login
         }
 
@@ -141,7 +142,7 @@ const Home = () => {
                             required
                         />
 
-                        <button type="submit">Go</button>
+                        <button type="submit"><b>Go</b> &nbsp;<i className="fa-sharp fa-solid fa-plane"></i></button>
                     </form>
                 </div>
 
