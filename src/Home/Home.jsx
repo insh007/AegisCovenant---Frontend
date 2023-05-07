@@ -59,7 +59,7 @@ const Home = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.get(`http://localhost:3000/flights`, {
+            const response = await axios.get(`https://ages-covenant-api.onrender.com/flights`, {
                 params: {
                     Source: source,
                     Destination: destination,

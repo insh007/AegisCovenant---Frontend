@@ -15,7 +15,7 @@ const Register = () => {
         e.preventDefault();
 
         // API call
-        const response = await fetch("http://localhost:3000/createUser", {
+        const response = await fetch("https://ages-covenant-api.onrender.com/createUser", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
